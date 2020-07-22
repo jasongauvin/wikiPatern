@@ -1,5 +1,5 @@
 package models
 
 func MakeMigrations() {
-	db.AutoMigrate(&Post{})
+	db.AutoMigrate(&Article{})
 }
