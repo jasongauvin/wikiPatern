@@ -1,29 +1,4 @@
-{{ define "Index" }}
-  {{ template "Header" }}
-    {{ template "Menu"  }}
-    <h2> Articles </h2>
-    <table border="1">
-      <thead>
-      <tr>
-        <td>ID</td>
-        <td>Name</td>
-      </tr>
-       </thead>
-       <tbody>
-    {{ range . }}
-      <tr>
-        <td>{{ .ID }}</td>
-        <td> {{ .Name }} </td>
-      </tr>
-    {{ end }}
-       </tbody>
-    </table>
-  {{ template "Footer" }}
-{{ end }}
-
-
-{{ template "header.html" .}}
-
+{{define "content"}}
 <h1>Hello Gin!</h1>
 
 <table border="1">
@@ -31,16 +6,21 @@
   <tr>
     <td>ID</td>
     <td>Name</td>
+    <td>Content</td>
+    <td>Created at</td>
+    <td>Updated at</td>
   </tr>
   </thead>
   <tbody>
-  {{ range articles }}
+  {{ range .payload }}
     <tr>
-      <td>{{ articles.ID }}</td>
-      <td> {{ articles.Name }} </td>
+      <td>{{ .ID }}</td>
+      <td>{{ .Title }}</td>
+      <td>{{ .Content }}</td>
+      <td>{{ .CreatedAt }}</td>
+      <td>{{ .UpdatedAt }}</td>
     </tr>
   {{ end }}
   </tbody>
 </table>
-<!--Embed the footer.html template at this location-->
-{{ template "footer.html" .}}
+{{end}}

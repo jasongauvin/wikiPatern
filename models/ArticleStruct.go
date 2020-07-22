@@ -8,9 +8,9 @@ import (
 
 // Article is user post in the wiki
 type Article struct {
-	ID   uint64 `gorm:"primary_key"`
-	Title string `gorm:"size:255"`
-	Content string `gorm:"size:2000"`
+	ID        uint64 `gorm:"primary_key"`
+	Title     string `gorm:"size:255"`
+	Content   string `gorm:"size:2000"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -67,7 +67,7 @@ func EditArticleByID(article *Article, id uint64) error {
 	}
 	article.ID = id
 	article.UpdatedAt = time.Now()
-	
+
 	err = db.Debug().Save(&article).Error
 	if err != nil {
 		return errors.New("Could'nt update article")

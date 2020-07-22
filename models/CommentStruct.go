@@ -8,8 +8,8 @@ import (
 
 // Comment is user post in the wiki
 type Comment struct {
-	ID   uint64 `gorm:"primary_key"`
-	Text string `gorm:"size:500"`
+	ID        uint64 `gorm:"primary_key"`
+	Text      string `gorm:"size:500"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -66,7 +66,7 @@ func EditCommentByID(comment *Comment, id uint64) error {
 	}
 	comment.ID = id
 	comment.UpdatedAt = time.Now()
-	
+
 	err = db.Debug().Save(&comment).Error
 	if err != nil {
 		return errors.New("Could'nt update comment")
