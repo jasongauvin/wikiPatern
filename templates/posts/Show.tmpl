@@ -1,0 +1,9 @@
+{{ define "ShowPost" }}
+  {{ template "Header" }}
+    {{ template "Menu"  }}
+    <h2> Post n°{{ .ID }} </h2>
+      <p>Name: {{ .Name }}</p>
+      <br />
+      <a href="/post/edit?id={{ .ID }}">Edit</a></p>
+  {{ template "Footer" }}
+{{ end }}
