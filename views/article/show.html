@@ -1,0 +1,12 @@
+{{include "layouts/header"}}
+
+<div class="jumbotron">
+  <h1 class="display-4">{{ .article.Title }}</h1>
+  <p class="lead">Title: {{ .article.Content }}</p>
+  <hr class="my-4">
+  <p>Date created: {{ .article.CreatedAt }}</p>
+  <p>Last update: {{ .article.UpdatedAt }}</p>
+  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+</div>
+
+{{include "layouts/footer"}}

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	// Not used but need to be imported
 	_ "github.com/go-sql-driver/mysql"
-
 	"github.com/jinzhu/gorm"
 	"log"
 )
@@ -20,6 +19,6 @@ func InitializeDb(user string, password string, host string, name string, port i
 		log.Fatal("error:", err)
 		return
 	}
-	fmt.Printf("We are connected to database")
+	fmt.Printf("We are connected to database \n")
 	db = tmpDb
 }
