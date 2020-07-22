@@ -20,3 +20,27 @@
     </table>
   {{ template "Footer" }}
 {{ end }}
+
+
+{{ template "header.html" .}}
+
+<h1>Hello Gin!</h1>
+
+<table border="1">
+  <thead>
+  <tr>
+    <td>ID</td>
+    <td>Name</td>
+  </tr>
+  </thead>
+  <tbody>
+  {{ range articles }}
+    <tr>
+      <td>{{ articles.ID }}</td>
+      <td> {{ articles.Name }} </td>
+    </tr>
+  {{ end }}
+  </tbody>
+</table>
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}
