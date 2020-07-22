@@ -6,14 +6,16 @@ import (
 	"time"
 )
 
+// Article is user post in the wiki
 type Article struct {
 	ID   uint64 `gorm:"primary_key"`
 	Title string `gorm:"size:255"`
 	Content string `gorm:"size:2000"`
-	CreatedAt *time.Time `gorm: not null`
-	UpdatedAt *time.Time
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
+// FindArticleByID allows you to find a specific article using its id
 func FindArticleByID(uid uint64) (Article, error) {
 	var err error
 	var article Article
@@ -27,6 +29,7 @@ func FindArticleByID(uid uint64) (Article, error) {
 	return article, nil
 }
 
+// FindArticles returns you a list of articles
 func FindArticles() ([]Article, error) {
 	var err error
 	var articles []Article
@@ -37,6 +40,7 @@ func FindArticles() ([]Article, error) {
 	return articles, nil
 }
 
+// DeleteArticleByID allows you to remove an article from the db using its id
 func DeleteArticleByID(id uint64) error {
 	var err error
 	var article Article
@@ -53,6 +57,7 @@ func DeleteArticleByID(id uint64) error {
 	return nil
 }
 
+// EditArticleByID allow you to modify an article using its id
 func EditArticleByID(article *Article, id uint64) error {
 	var err error
 	var old Article
@@ -61,6 +66,8 @@ func EditArticleByID(article *Article, id uint64) error {
 		return errors.New("Article Not Found")
 	}
 	article.ID = id
+	article.UpdatedAt = time.Now()
+	
 	err = db.Debug().Save(&article).Error
 	if err != nil {
 		return errors.New("Could'nt update article")
@@ -68,9 +75,10 @@ func EditArticleByID(article *Article, id uint64) error {
 	return nil
 }
 
-// CreatedArticle creates an article row in database
+// CreateArticle creates an article row in database
 func CreateArticle(article *Article) error {
 	var err error
+	article.CreatedAt = time.Now()
 	err = db.Debug().Create(article).Error
 
 	if err != nil {
