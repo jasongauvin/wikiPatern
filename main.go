@@ -4,6 +4,7 @@ import (
 	"github.com/caarlos0/env/v6"
 	"github.com/gin-gonic/gin"
 	"log"
+	"github.com/jasongauvin/wikiPattern/models"
 )
 
 type config struct {
