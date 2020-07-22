@@ -15,13 +15,12 @@ type config struct {
 }
 
 func HandleRequest(){
-	router := gin.New()
+	router := gin.Default()
 
-	router.Use(gin.Logger())
-	router.Use(gin.Recovery())
-
-	router.POST("/", func(c *gin.Context){
-		log.Printf("Wassup ?")
+	router.GET("/", func(c *gin.Context){
+		c.JSON(200, gin.H{
+			"message": "Poil au message",
+		})
 	})
 
 	// Listen and serve on 0.0.0.0:8080
