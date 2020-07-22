@@ -8,9 +8,9 @@ services:
     container_name: mysql_db
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: spidermail
-      MYSQL_USER: spidermail
-      MYSQL_PASSWORD: spidermail
+      MYSQL_DATABASE: wiki
+      MYSQL_USER: wiki
+      MYSQL_PASSWORD: wiki
     volumes:
       - ./mysql_data:/var/lib/mysql
     ports:
@@ -18,11 +18,11 @@ services:
   app:
     build: .
     environment:
-      DB_USER: spidermail
-      DB_PASSWORD: spidermail
+      DB_USER: wiki
+      DB_PASSWORD: wiki
       DB_HOST: db
       DB_PORT: 3306
-      DB_NAME: spidermail
+      DB_NAME: wiki
     volumes:
       - ".:/go/src"
     ports:
@@ -32,28 +32,3 @@ services:
       - db
     depends_on:
       - db
-
-  app-consumer:
-    image: golang:1.13-alpine
-    ports:
-      - '8088:8088'
-    volumes:
-      - './rabbitmq/:/go/src/github.com/JackMaarek/spiderMail/'
-      - './services/MailerService.go:/go/src/github.com/JackMaarek/spiderMail/services/MailerService.go'
-      - './models/:/go/src/github.com/JackMaarek/spiderMail/models/'
-      - './go.mod:/go/src/github.com/JackMaarek/spiderMail/go.mod'
-    command: go run /go/src/github.com/JackMaarek/spiderMail/main.go
-
-  rabbitmq:
-    image: 'docker.io/bitnami/rabbitmq:3.8-debian-10'
-    ports:
-      - '15672:15672'
-      - "5672:5672"
-    volumes:
-      - 'rmq_data:/bitnami'
-    environment:
-      RABBITMQ_USERNAME: user
-      RABBITMQ_PASSWORD: bitnami
-volumes:
-  rmq_data:
-    driver: local
