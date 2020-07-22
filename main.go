@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/caarlos0/env/v6"
 	"github.com/gin-gonic/gin"
 	"github.com/jasongauvin/wikiPattern/models"
@@ -21,7 +20,6 @@ func main() {
 	router := gin.Default()
 
 	cfg := config{}
-	fmt.Println(cfg)
 	if err := env.Parse(&cfg); err != nil {
 		log.Fatal(err)
 	}

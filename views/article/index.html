@@ -1,26 +1,14 @@
-{{define "content"}}
-<h1>Hello Gin!</h1>
+{{include "layouts/header"}}
+<h1>Posts list</h1>
 
-<table border="1">
-  <thead>
-  <tr>
-    <td>ID</td>
-    <td>Name</td>
-    <td>Content</td>
-    <td>Created at</td>
-    <td>Updated at</td>
-  </tr>
-  </thead>
-  <tbody>
   {{ range .payload }}
-    <tr>
-      <td>{{ .ID }}</td>
-      <td>{{ .Title }}</td>
-      <td>{{ .Content }}</td>
-      <td>{{ .CreatedAt }}</td>
-      <td>{{ .UpdatedAt }}</td>
-    </tr>
+    <div class="card" style="width: 18rem; display: inline-block">
+      <div class="card-img-top" style="background-color: white"></div>
+      <div class="card-body">
+        <h5 class="card-title">{{ .Title }}</h5>
+        <p class="card-text">{{ .Content }}</p>
+        <a href="/articles/{{ .ID }}" class="btn btn-primary">Show article</a>
+      </div>
+    </div>
   {{ end }}
-  </tbody>
-</table>
-{{end}}
+{{include "layouts/footer"}}
