@@ -6,29 +6,7 @@ import (
 	"github.com/jasongauvin/wikiPattern/models"
 	"github.com/jasongauvin/wikiPattern/services"
 	"net/http"
-	"time"
 )
-
-var articleList = []models.Article{
-	{
-		ID:        0,
-		Title:     "Article 1",
-		Content:   "Body article 1",
-		CreatedAt: time.Time{},
-		UpdatedAt: time.Time{},
-	},
-	{
-		ID:        1,
-		Title:     "Article 2",
-		Content:   "Body article 2",
-		CreatedAt: time.Time{},
-		UpdatedAt: time.Time{},
-	},
-}
-
-func GetAllArticles() []models.Article {
-	return articleList
-}
 
 func GetArticles(c *gin.Context) {
 	var articles []models.Article
