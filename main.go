@@ -26,9 +26,9 @@ func main() {
 	// Database initialization
 	models.InitializeDb(cfg.DbUser, cfg.DbPassword, cfg.DbHost, cfg.DbName, cfg.DbPort)
 	models.MakeMigrations()
+	models.LoadFixtures()
 
 	routes.SetupRouter(router)
 
-	log.Fatal(router.Run(":8080"))
-
+	log.Fatal(router.Run(":8000"))
 }

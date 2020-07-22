@@ -26,9 +26,14 @@ services:
     volumes:
       - ".:/go/src"
     ports:
-      - "8080:8080"
+      - "8000:8000"
     tty: true
     links:
       - db
     depends_on:
       - db
+    restart: always
+  adminer:
+    image: adminer
+    ports: 
+      - "8080:8080"
