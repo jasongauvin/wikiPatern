@@ -1,10 +1,10 @@
 {{ define "NewPost" }}
   {{ template "Header" }}
     {{ template "Menu" }}
-   <h2>New Post</h2>
+   <h2>New Article</h2>
     <form method="POST" action="insert">
       <label> Name </label><input type="text" name="name" /><br />
-      <input type="submit" value="Save post" />
+      <input type="submit" value="Save article" />
     </form>
   {{ template "Footer" }}
 {{ end }}
