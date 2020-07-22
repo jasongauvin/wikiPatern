@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/caarlos0/env/v6"
 	"log"
+	"github.com/jasongauvin/wikiPattern/models"
 )
 
 
