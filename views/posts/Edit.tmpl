@@ -1,11 +1,11 @@
 {{ define "PostEdit" }}
-  {{ template "layouts/Header" }}
-    {{ template "layouts/Menu" }}
-   <h2>Edit Name </h2>
+  {{ template "Header" }}
+    {{ template "Menu" }}
+   <h2>Edit Post</h2>
     <form method="POST" action="update">
       <input type="hidden" name="uid" value="{{ .ID }}" />
       <label> Name </label><input type="text" name="name" value="{{ .Name }}"/><br />
       <input type="submit" value="Save post" />
     </form><br/>
-  {{ template "layouts/Footer" }}
+  {{ template "Footer" }}
 {{ end }}
