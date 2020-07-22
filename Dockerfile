@@ -9,7 +9,6 @@ COPY . .
 # Run command to nstall the dependencies
 RUN go install
 
-CMD ls
 CMD go run main.go
 
 EXPOSE 8080
