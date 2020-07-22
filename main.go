@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"github.com/caarlos0/env/v6"
+
 )
 
 
@@ -20,5 +21,5 @@ func main() {
 		log.Fatal(err)
 	}
 	// Database initialization
-	config.InitializeDb(cfg.DbUser, cfg.DbPassword, cfg.DbHost, cfg.DbName, cfg.DbPort)
+	models.InitializeDb(cfg.DbUser, cfg.DbPassword, cfg.DbHost, cfg.DbName, cfg.DbPort)
 }
