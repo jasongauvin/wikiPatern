@@ -1,5 +1,7 @@
 # Wiki
 
+![Go](https://github.com/jasongauvin/wikiPattern/workflows/Go/badge.svg?branch=master)
+
 This repository is to train on design patterns, this iteration is about the MVC design pattern.
 
 ---
