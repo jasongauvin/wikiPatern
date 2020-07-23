@@ -2,15 +2,18 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"time"
 )
 
 // Article is user post in the wiki
 type Article struct {
-	ID        uint64 `gorm:"primary_key"`
-	Title     string `gorm:"size:255"`
-	Content   string `gorm:"size:2000"`
+	ID      uint64 `gorm:"primary_key"`
+	Title   string `gorm:"size:255;unique;not null"`
+	Content string `gorm:"size:2000"`
+	//Published bool   `gorm:"default:false"`
+	Comments  []Comment `gorm:"foreignkey:ArticleId"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -19,13 +22,14 @@ type Article struct {
 func FindArticleByID(uid uint64) (Article, error) {
 	var err error
 	var article Article
-	err = db.Debug().First(&article, uid).Error
+	err = db.Debug().Preload("Comments").First(&article, uid).Error
 	if err != nil {
 		return Article{}, err
 	}
 	if gorm.IsRecordNotFoundError(err) {
 		return Article{}, errors.New("Article Not Found")
 	}
+	fmt.Println(article.Comments)
 	return article, nil
 }
 
@@ -85,4 +89,27 @@ func CreateArticle(article *Article) error {
 		return err
 	}
 	return nil
+}
+
+func FindArticleByName(name string) (Article, error) {
+	var err error
+	var article Article
+	err = db.Debug().Where("name = ?", name).First(&article).Error
+	if err != nil {
+		return Article{}, err
+	}
+	if gorm.IsRecordNotFoundError(err) {
+		return Article{}, errors.New("Article Not Found")
+	}
+	return article, nil
+}
+
+func FindArticleByOrderedDate() ([]Article, error) {
+	var err error
+	var articles []Article
+	err = db.Debug().Order("created_at desc").Limit(5).Find(&articles).Error
+	if err != nil {
+		return nil, err
+	}
+	return articles, nil
 }

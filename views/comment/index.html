@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="page-header">
+                <h1><small class="pull-right">{{.commentsCount}} comments</small> Comments </h1>
+            </div>
+            {{ range .comments }}
+            <div class="comments-list">
+                <div class="media">
+                    <p class="pull-right"><small>{{.CreatedAt}}</small></p>
+                    <div class="media-body">
+
+                        <h4 class="media-heading user_name"><i class="fa fa-user"></i> Anonymous</h4>
+                        {{.Text}}
+
+                        <p><small><a href="">Like</a> - <a href="">Share</a></small></p>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</div>

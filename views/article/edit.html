@@ -1,11 +1,24 @@
-{{ define "PostEdit" }}
-  {{ template "Header" }}
-    {{ template "Menu" }}
+{{include "layouts/header"}}
    <h2>Edit Article</h2>
-    <form method="POST" action="update">
-      <input type="hidden" name="uid" value="{{ .ID }}" />
-      <label> Name </label><input type="text" name="name" value="{{ .Name }}"/><br />
-      <input type="submit" value="Save article" />
-    </form><br/>
-  {{ template "Footer" }}
-{{ end }}
+    <form method="post" action="/edit_article/{{.article.ID}}">
+        <div class="form-group">
+            <label for="articleTitle">Title</label>
+            <input type="text" value="{{ .article.Title }}" class="form-control" id="articleTitle" name="articleTitle">
+        </div>
+        <div class="form-group">
+            <label for="articleContent">Content</label>
+            <textarea class="form-control" id="articleContent" name="articleContent" rows="3">{{.article.Content}}</textarea>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="articlePublish">
+            <label class="form-check-label" for="articlePublish">Publish</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+<script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
+<script>
+    tinymce.init({
+        selector: '#articleContent'
+    });
+</script>
+{{include "layouts/footer"}}
