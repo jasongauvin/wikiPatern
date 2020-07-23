@@ -7,12 +7,12 @@ import (
 )
 
 type Article struct {
-	ID      uint64      `gorm:"primary_key"`
-	Title   string      `gorm:"size:255;unique;not null"`
-	Content string      `gorm:"size:2000"`
+	ID      uint64 `gorm:"primary_key"`
+	Title   string `gorm:"size:255;unique;not null"`
+	Content string `gorm:"size:2000"`
 	//Published bool    `gorm:"default:false"`
 	Comments  []Comment `gorm:"foreignkey:ArticleId"`
-	Tags  	  []Tag     `gorm:"foreignkey:ArticleId"`
+	Tags      []Tag     `gorm:"foreignkey:ArticleId"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

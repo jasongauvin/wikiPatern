@@ -7,7 +7,7 @@ import (
 
 type Tag struct {
 	ID        uint64 `gorm:"primary_key"`
-	Name   	  string `gorm:"size:255;unique;not null"`
+	Name      string `gorm:"size:255;unique;not null"`
 	ArticleId uint64
 }
 
