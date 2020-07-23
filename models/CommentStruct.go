@@ -10,6 +10,7 @@ import (
 type Comment struct {
 	ID        uint64 `gorm:"primary_key"`
 	Text      string `gorm:"size:500"`
+	ArticleId uint64
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -85,3 +86,12 @@ func CreateComment(comment *Comment) error {
 	}
 	return nil
 }
+
+/*func FindCommentByArticle(article *Article) (*[]Comment, error) {
+	var err error
+	var comment Comment
+	var resultCount int
+	dbComments := db.Model(&article).Related(&comment)
+	fmt.Println(dbComments.Count(&resultCount))
+	return dbComments, err
+}*/

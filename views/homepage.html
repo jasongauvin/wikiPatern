@@ -1,0 +1,24 @@
+{{include "layouts/header"}}
+<h1>BLOOLB BLOGGLOOB</h1>
+<section class="details-card">
+    <div class="container">
+        <div class="row">
+            {{range .articles }}
+            <div class="col-md-4">
+                <div class="card-content">
+                    <div class="card-img">
+                        <img src="https://placeimg.com/380/230/nature" alt="">
+                        <span><h4>{{.Title}}</h4></span>
+                    </div>
+                    <div class="card-desc">
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam, voluptatum! Dolor quo, perspiciatis
+                            voluptas totam</p>
+                        <a href="#" class="btn-card">Read</a>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</section>
+{{include "layouts/footer"}}

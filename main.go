@@ -26,7 +26,8 @@ func main() {
 	// Database initialization
 	models.InitializeDb(cfg.DbUser, cfg.DbPassword, cfg.DbHost, cfg.DbName, cfg.DbPort)
 	models.MakeMigrations()
-	models.LoadFixtures()
+	//Fixtures should be triggered if db empty
+	//models.LoadFixtures()
 
 	routes.SetupRouter(router)
 
