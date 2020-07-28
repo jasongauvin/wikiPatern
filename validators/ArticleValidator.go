@@ -6,10 +6,10 @@ import (
 )
 
 func ValidateArticle(article *services.ArticleForm) error {
-	if article.Title =="" {
+	if article.Title == "" {
 		return errors.New("Required title")
 	}
-	if article.Content =="" {
+	if article.Content == "" {
 		return errors.New("Required content")
 	}
 	return nil

@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func GetProfilePage(c *gin.Context)  {
+func GetProfilePage(c *gin.Context) {
 	var userSession *models.UserSession
 	var user *models.User
 	var err error
@@ -36,6 +36,6 @@ func GetProfilePage(c *gin.Context)  {
 	}
 	c.HTML(http.StatusOK, "user/user_profile.html", gin.H{
 		"title": "User profile",
-		"user": user,
+		"user":  user,
 	})
 }

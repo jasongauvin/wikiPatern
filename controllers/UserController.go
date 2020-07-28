@@ -5,6 +5,6 @@ import (
 	"github.com/jasongauvin/wikiPattern/services"
 )
 
-func GetUserProfile(c *gin.Context)  {
+func GetUserProfile(c *gin.Context) {
 	services.GetProfilePage(c)
 }

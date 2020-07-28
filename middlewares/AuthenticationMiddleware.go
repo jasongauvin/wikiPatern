@@ -26,4 +26,3 @@ func CheckAuthorization(c *gin.Context) {
 	}
 	c.Next()
 }
-

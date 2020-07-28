@@ -9,10 +9,10 @@ import (
 )
 
 type UserSession struct {
-	ID 			 uint64    `gorm:"primary_key"`
-	SessionKey   string    `gorm:"size:255;unique;not null"`
-	ExpireAt	 time.Time `gorm:"size:255;unique;not null"`
-	UserId       uint64
+	ID         uint64    `gorm:"primary_key"`
+	SessionKey string    `gorm:"size:255;unique;not null"`
+	ExpireAt   time.Time `gorm:"size:255;unique;not null"`
+	UserId     uint64
 }
 
 // FindSessionByKey allows you to find a specific session using its sessionKey.
@@ -36,7 +36,7 @@ func CreateUserSession(user *User, sessionKey string) (*UserSession, error) {
 	var err error
 	var userSession UserSession
 	userSession.SessionKey = sessionKey
-	userSession.ExpireAt = time.Now().Add(20*time.Minute)
+	userSession.ExpireAt = time.Now().Add(20 * time.Minute)
 	userSession.UserId = user.ID
 	err = db.Debug().Create(&userSession).Error
 
@@ -47,7 +47,7 @@ func CreateUserSession(user *User, sessionKey string) (*UserSession, error) {
 }
 
 // EditUserSessionByKey update an user_session row in database from it session key
-func EditUserSessionByKey(session *UserSession, sessionKey string) (*UserSession ,error)  {
+func EditUserSessionByKey(session *UserSession, sessionKey string) (*UserSession, error) {
 	var err error
 	var oldSession UserSession
 	err = db.Debug().Where("session_key = ?", sessionKey).First(&oldSession).Error
@@ -55,7 +55,7 @@ func EditUserSessionByKey(session *UserSession, sessionKey string) (*UserSession
 		return nil, errors.New("Session Not Found")
 	}
 	session.SessionKey = uuid.NewV4().String()
-	session.ExpireAt = time.Now().Add(20*time.Minute)
+	session.ExpireAt = time.Now().Add(20 * time.Minute)
 	err = db.Debug().Save(&session).Error
 	if err != nil {
 		return nil, errors.New("Could'nt update session")

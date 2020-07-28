@@ -1,11 +1,12 @@
 package validators
+
 import (
-"errors"
-"github.com/jasongauvin/wikiPattern/services"
+	"errors"
+	"github.com/jasongauvin/wikiPattern/services"
 )
 
 func ValidateComment(comment *services.CommentForm) error {
-	if comment.Content =="" {
+	if comment.Content == "" {
 		return errors.New("Required content")
 	}
 	return nil

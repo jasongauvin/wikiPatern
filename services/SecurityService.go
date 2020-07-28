@@ -8,18 +8,18 @@ import (
 )
 
 type RegisterForm struct {
-	Email 	 string `form:"userEmail" binding:"required"`
+	Email    string `form:"userEmail" binding:"required"`
 	Password string `form:"userPassword" binding:"required"`
 }
 
 type LoginForm struct {
-	Email 	 string `form:"userEmail" binding:"required"`
+	Email    string `form:"userEmail" binding:"required"`
 	Password string `form:"userPassword" binding:"required"`
 }
 
 // SaveUser creates a user.
 // Return the created object
-func SaveUser(email string, password string) (*models.User, error)  {
+func SaveUser(email string, password string) (*models.User, error) {
 	var err error
 	var user models.User
 	user.Email = email
@@ -82,7 +82,7 @@ func CheckSessionExpiration(id uint64) (*models.UserSession, error) {
 		fmt.Println("error:", err)
 		return nil, err
 	}
-	if userSession.ExpireAt.After(time.Now()){
+	if userSession.ExpireAt.After(time.Now()) {
 		var updatedSession *models.UserSession
 		updatedSession, err = models.EditUserSessionByKey(userSession, userSession.SessionKey)
 		return updatedSession, nil

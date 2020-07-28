@@ -9,12 +9,12 @@ import (
 	"net/http"
 )
 
-func GetRegistrationForm(c *gin.Context)  {
+func GetRegistrationForm(c *gin.Context) {
 	c.HTML(
 		http.StatusOK,
 		"security/registration.html",
 		gin.H{
-			"title":    "Registration",
+			"title": "Registration",
 		})
 }
 
@@ -50,16 +50,16 @@ func Registration(c *gin.Context) {
 	c.Abort()
 }
 
-func GetLoginForm(c *gin.Context)  {
+func GetLoginForm(c *gin.Context) {
 	c.HTML(
 		http.StatusOK,
 		"security/login.html",
 		gin.H{
-			"title":    "Registration",
+			"title": "Registration",
 		})
 }
 
-func Login(c *gin.Context)  {
+func Login(c *gin.Context) {
 	var err error
 	var loginForm services.LoginForm
 	if err = c.ShouldBind(&loginForm); err != nil {
@@ -76,7 +76,7 @@ func Login(c *gin.Context)  {
 		c.AbortWithStatus(http.StatusUnauthorized)
 	}
 	if userSession != nil {
-		c.SetCookie("session_token", userSession.SessionKey , 3600, "/", "localhost", false, true)
+		c.SetCookie("session_token", userSession.SessionKey, 3600, "/", "localhost", false, true)
 		c.Redirect(http.StatusMovedPermanently, "/auth/profile")
 		c.Abort()
 	}
