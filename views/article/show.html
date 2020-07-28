@@ -3,6 +3,11 @@
   <div class="col-lg-8">
   <!-- Article post -->
   <h1>{{ .article.Title }}</h1>
+  <div>
+    Export article
+    <a href="/export/{{ .article.ID }}?format=csv"><button>CSV</button></a>
+    <a href="/export/{{ .article.ID }}?format=xlsx"><button>XLSX</button></a>
+  </div>
   <p class="lead"><i class="fa fa-user"></i> by <a href="">Anonymous</a>
   </p>
   <hr>

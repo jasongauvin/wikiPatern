@@ -19,4 +19,5 @@ func SetupRouter(router *gin.Engine) {
 	router.POST("/edit_article/:id", controllers.EditArticleById)
 	router.GET("/delete_article/:id", controllers.DeleteArticleById)
 	router.POST("/comment", controllers.CreateComment)
+	router.GET("/export/:id", controllers.ExportArticle)
 }
