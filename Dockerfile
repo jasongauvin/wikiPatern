@@ -7,8 +7,6 @@ WORKDIR /go/src
 # Copy the full project to currennt directory
 COPY . .
 # Run command to nstall the dependencies
-RUN go install
-
-CMD go run main.go
+RUN go mod download
 
 EXPOSE 8080

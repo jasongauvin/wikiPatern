@@ -4,13 +4,17 @@ import (
 	"github.com/foolin/goview/supports/ginview"
 	"github.com/gin-gonic/gin"
 	"github.com/jasongauvin/wikiPattern/controllers"
+	"github.com/jasongauvin/wikiPattern/middlewares"
 )
 
 func SetupRouter(router *gin.Engine) {
 	//new template engine
 	router.HTMLRender = ginview.Default()
 
+	// Home
 	router.GET("/", controllers.GetHomePage)
+
+	// Articles
 	router.GET("/articles", controllers.GetArticles)
 	router.GET("/articles/:id", controllers.GetArticleById)
 	router.GET("/new_article", controllers.CreateArticle)
@@ -18,5 +22,21 @@ func SetupRouter(router *gin.Engine) {
 	router.GET("/edit_article/:id", controllers.EditArticleById)
 	router.POST("/edit_article/:id", controllers.EditArticleById)
 	router.GET("/delete_article/:id", controllers.DeleteArticleById)
+
+	// Comments
 	router.POST("/comment", controllers.CreateComment)
+
+	// Auth
+	router.GET("/register", controllers.GetRegistrationForm)
+	router.GET("/login", controllers.GetLoginForm)
+	router.POST("/register", controllers.Registration)
+	router.POST("/login", controllers.Login)
+
+	// Auth required
+	authorized := router.Group("/auth")
+	authorized.Use(middlewares.CheckAuthorization)
+	{
+		authorized.GET("/profile", controllers.GetUserProfile)
+	}
+
 }

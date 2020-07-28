@@ -89,6 +89,7 @@ func CreateArticle(article *Article) error {
 	return nil
 }
 
+// FindArticlesByName returns you an article from its name
 func FindArticleByName(name string) (Article, error) {
 	var err error
 	var article Article
@@ -102,6 +103,7 @@ func FindArticleByName(name string) (Article, error) {
 	return article, nil
 }
 
+// FindArticleByOrderedDate returns you a list of articles sorted by descendant date
 func FindArticleByOrderedDate() ([]Article, error) {
 	var err error
 	var articles []Article
