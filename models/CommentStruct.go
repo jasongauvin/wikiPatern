@@ -87,6 +87,7 @@ func CreateComment(comment *Comment) error {
 	return nil
 }
 
+// FindCommentByArticle returns you a list of comments from related article
 /*func FindCommentByArticle(article *Article) (*[]Comment, error) {
 	var err error
 	var comment Comment

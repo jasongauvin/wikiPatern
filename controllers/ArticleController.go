@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jasongauvin/wikiPattern/services"
+	"github.com/jasongauvin/wikiPattern/validators"
 	"net/http"
 )
 
@@ -58,6 +59,15 @@ func CreateArticle(c *gin.Context) {
 			})
 	case "POST":
 		var form services.ArticleForm
+		err := validators.ValidateArticle(&form)
+		if err != nil {
+			fmt.Println("error:", err)
+			c.HTML(
+				http.StatusBadRequest,
+				"errors/error.html",
+				gin.H{"error": err.Error()})
+			return
+		}
 		if err := c.ShouldBind(&form); err != nil {
 			fmt.Println("error:", err)
 			c.HTML(
@@ -100,6 +110,15 @@ func EditArticleById(c *gin.Context) {
 			})
 	case "POST":
 		var form services.ArticleForm
+		err := validators.ValidateArticle(&form)
+		if err != nil {
+			fmt.Println("error:", err)
+			c.HTML(
+				http.StatusBadRequest,
+				"errors/error.html",
+				gin.H{"error": err.Error()})
+			return
+		}
 		if err := c.ShouldBind(&form); err != nil {
 			c.HTML(
 				http.StatusBadRequest,
