@@ -12,7 +12,7 @@ type ExportContext struct {
 }
 
 func InitExportContext(e exportInterface) *ExportContext {
-	return &ExportContext {
+	return &ExportContext{
 		exportInterface: e,
 	}
 }

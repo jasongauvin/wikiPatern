@@ -30,7 +30,7 @@ func CreateSheet() (*xlsx.Sheet, *xlsx.File) {
 	return sh, wb
 }
 
-func HydrateRows (article models.Article){
+func HydrateRows(article models.Article) {
 	sh, wb := CreateSheet()
 	row := sh.AddRow()
 	row.AddCell().Value = "Id"

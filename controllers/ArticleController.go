@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"github.com/jasongauvin/wikiPattern/strategies/export"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jasongauvin/wikiPattern/services"
+	"github.com/jasongauvin/wikiPattern/strategies/export"
 	"net/http"
 )
 
