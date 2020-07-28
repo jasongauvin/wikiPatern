@@ -140,6 +140,7 @@ func ExportArticle(c *gin.Context) {
 
 	csv := &export.Csv{}
 	xlsx := &export.Xlsx{}
+	var articleExportFile *export.ArticleExportFile
 	var exportContext *export.ExportContext
 
 	// Select export Format
@@ -148,7 +149,9 @@ func ExportArticle(c *gin.Context) {
 	} else if exportFormat == "xlsx" {
 		exportContext = export.InitExportContext(xlsx)
 	}
-
-	exportContext.Export(c.Param("id"))
+	articleExportFile = exportContext.Export(c.Param("id"))
+	c.Header("Content-Description", "File Transfer")
+	c.Header("Content-Disposition", "attachment; filename="+articleExportFile.FileName)
+	c.Data(http.StatusOK, articleExportFile.MimeType, articleExportFile.FileBytes)
 	//c.Redirect(http.StatusTemporaryRedirect, "/articles/"+c.Param("id"))
 }

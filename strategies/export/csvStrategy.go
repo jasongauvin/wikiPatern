@@ -8,6 +8,9 @@ import (
 type Csv struct {
 }
 
-func (c *Csv) export(article models.Article) {
+func (c *Csv) export(article *models.Article) *ArticleExportFile {
 	fmt.Println("Export in csv")
+	articleExportFile := new(ArticleExportFile)
+
+	return articleExportFile
 }
