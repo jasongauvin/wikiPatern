@@ -1,5 +1,7 @@
 package export
 
+import "github.com/jasongauvin/wikiPattern/models"
+
 type exportInterface interface {
-	export()
+	export(article models.Article)
 }

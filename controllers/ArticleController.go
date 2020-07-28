@@ -149,6 +149,6 @@ func ExportArticle(c *gin.Context) {
 		exportContext = export.InitExportContext(xlsx)
 	}
 
-	exportContext.Export()
-	// c.Redirect(http.StatusTemporaryRedirect, "/articles/"+c.Param("id"))
+	exportContext.Export(c.Param("id"))
+	//c.Redirect(http.StatusTemporaryRedirect, "/articles/"+c.Param("id"))
 }
