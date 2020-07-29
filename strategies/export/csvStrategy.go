@@ -1,12 +1,12 @@
 package export
 
 import (
+	"bytes"
+	"encoding/csv"
 	"fmt"
 	"github.com/jasongauvin/wikiPattern/models"
-	"encoding/csv"
-	"bytes"
-	"time"
 	"strconv"
+	"time"
 )
 
 type Csv struct {
@@ -25,13 +25,13 @@ func (c *Csv) export(article *models.Article) *ArticleExportFile {
 	return articleExportFile
 }
 
-func createCsv(article *models.Article) (bytes.Buffer) {
+func createCsv(article *models.Article) bytes.Buffer {
 	var b bytes.Buffer
 	writer := csv.NewWriter(&b)
 	data := [][]string{{"Id", "Title", "Content", "CreatedAt"}, {strconv.FormatUint(article.ID, 10), article.Title, article.Content, time.Time.String(article.CreatedAt)}}
-	
+
 	writer.WriteAll(data)
-	
+
 	writer.Flush()
 
 	return b

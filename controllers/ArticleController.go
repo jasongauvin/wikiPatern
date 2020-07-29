@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/jasongauvin/wikiPattern/models"
 	"github.com/jasongauvin/wikiPattern/services"
 	"github.com/jasongauvin/wikiPattern/strategies/export"
 	"net/http"
@@ -48,81 +49,79 @@ func GetArticleById(c *gin.Context) {
 		})
 }
 
+func GetArticleForm(c *gin.Context) {
+	c.HTML(http.StatusOK,
+		"article/new.html",
+		gin.H{
+			"title": "Article form",
+			"url":   c.Request.URL.Path,
+		})
+}
+
 func CreateArticle(c *gin.Context) {
-	switch c.Request.Method {
-	case "GET":
-		c.HTML(http.StatusOK,
-			"article/new.html",
-			gin.H{
-				"title": "Article form",
-				"url":   c.Request.URL.Path,
-			})
-	case "POST":
-		var form services.ArticleForm
-		if err := c.ShouldBind(&form); err != nil {
-			fmt.Println("error:", err)
-			c.HTML(
-				http.StatusBadRequest,
-				"errors/error.html",
-				gin.H{"error": err.Error()})
-			return
-		}
-		article, err := services.SaveArticle(form.Title, form.Content)
-		if err != nil {
-			fmt.Println("Error: ", err)
-			c.AbortWithStatus(http.StatusUnprocessableEntity)
-		}
+	var form services.ArticleForm
+	if err := c.ShouldBind(&form); err != nil {
+		fmt.Println("error:", err)
 		c.HTML(
-			http.StatusCreated,
-			"article/show.html",
-			gin.H{
-				"title":   "Article Page",
-				"article": article,
-			})
-	default:
-		c.AbortWithStatus(http.StatusMethodNotAllowed)
+			http.StatusBadRequest,
+			"errors/error.html",
+			gin.H{"error": err.Error()})
+		return
 	}
+	article, err := services.SaveArticle(form.Title, form.Content)
+	if err != nil {
+		fmt.Println("Error: ", err)
+		c.AbortWithStatus(http.StatusUnprocessableEntity)
+	}
+	c.HTML(
+		http.StatusCreated,
+		"article/show.html",
+		gin.H{
+			"title":   "Article Page",
+			"article": article,
+		})
+}
+
+func GetArticleEditForm(c *gin.Context) {
+	var err error
+	var article *models.Article
+	article, err = services.LoadArticleById(c.Param("id"))
+	if err != nil {
+		fmt.Println("Error:", err)
+		c.AbortWithStatus(http.StatusNoContent)
+	}
+	c.HTML(
+		http.StatusOK,
+		"article/edit.html",
+		gin.H{
+			"title":   "Article edit form",
+			"article": article,
+		})
 }
 
 func EditArticleById(c *gin.Context) {
-	switch c.Request.Method {
-	case "GET":
-		article, err := services.LoadArticleById(c.Param("id"))
-		if err != nil {
-			fmt.Println("Error:", err)
-			c.AbortWithStatus(http.StatusNoContent)
-		}
+	var article *models.Article
+	var err error
+	var form services.ArticleForm
+	if err := c.ShouldBind(&form); err != nil {
 		c.HTML(
-			http.StatusOK,
-			"article/edit.html",
-			gin.H{
-				"title":   "Article edit form",
-				"article": article,
-			})
-	case "POST":
-		var form services.ArticleForm
-		if err := c.ShouldBind(&form); err != nil {
-			c.HTML(
-				http.StatusBadRequest,
-				"errors/error.html",
-				gin.H{"error": err.Error()})
-			return
-		}
-		article, err := services.EditArticle(c.Param("id"), form.Title, form.Content)
-		if err != nil {
-			fmt.Println("Error: ", err)
-			c.AbortWithStatus(http.StatusUnprocessableEntity)
-		}
-		c.HTML(
-			http.StatusOK,
-			"article/show.html",
-			gin.H{
-				"title":   "Article Page",
-				"article": article,
-			})
-	default:
-		c.AbortWithStatus(http.StatusMethodNotAllowed)
+			http.StatusBadRequest,
+			"errors/error.html",
+			gin.H{"error": err.Error()})
+		return
 	}
+	article, err = services.EditArticle(c.Param("id"), form.Title, form.Content)
+	if err != nil {
+		fmt.Println("Error: ", err)
+		c.AbortWithStatus(http.StatusUnprocessableEntity)
+	}
+	c.HTML(
+		http.StatusOK,
+		"article/show.html",
+		gin.H{
+			"title":   "Article Page",
+			"article": article,
+		})
 }
 
 func DeleteArticleById(c *gin.Context) {
