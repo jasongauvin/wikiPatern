@@ -1,44 +1,46 @@
 package export
 
 import (
-	"fmt"
 	"github.com/jasongauvin/wikiPattern/models"
 	"github.com/jasongauvin/wikiPattern/services"
 	"log"
 )
 
-type ExportContext struct {
+// Context is the structure for an export, based on the exportInterface
+type Context struct {
 	exportInterface exportInterface
 }
 
+// ArticleExportFile is the structure used to generate a response body for an article export file
 type ArticleExportFile struct {
 	FileBytes []byte
 	MimeType  string
 	FileName  string
 }
 
-func InitExportContext(e exportInterface) *ExportContext {
-	return &ExportContext{
+// NewContext is the constructor of a Context for exporting article
+func NewContext(e exportInterface) *Context {
+	return &Context{
 		exportInterface: e,
 	}
 }
 
-func (c *ExportContext) SetExportInterface(e exportInterface) {
-	c.exportInterface = e
-}
-
-func (c *ExportContext) Export(param string) *ArticleExportFile {
+// Export function is the context function that generate a file from an article id
+func (c *Context) Export(param string) *ArticleExportFile {
 	var articleExportFile *ArticleExportFile
 	var err error
 	var article *models.Article
+
 	article, err = services.LoadArticleById(param)
-	fmt.Println(article)
+
 	if err != nil {
 		log.Fatal("An error occurred while fetching data: ", err)
 	}
-	articleExportFile = c.exportInterface.export(article)
-	if articleExportFile == nil {
-		log.Fatal("Export file was not generated:", err)
+
+	articleExportFile, err = c.exportInterface.export(article)
+	if err != nil {
+		log.Fatal("An error occured while exporting article:", err)
 	}
+
 	return articleExportFile
 }

@@ -140,13 +140,13 @@ func ExportArticle(c *gin.Context) {
 	csv := &export.Csv{}
 	xlsx := &export.Xlsx{}
 	var articleExportFile *export.ArticleExportFile
-	var exportContext *export.ExportContext
+	var exportContext *export.Context
 
 	// Select export Format
 	if exportFormat == "csv" {
-		exportContext = export.InitExportContext(csv)
+		exportContext = export.NewContext(csv)
 	} else if exportFormat == "xlsx" {
-		exportContext = export.InitExportContext(xlsx)
+		exportContext = export.NewContext(xlsx)
 	}
 	articleExportFile = exportContext.Export(c.Param("id"))
 	c.Header("Content-Description", "File Transfer")
