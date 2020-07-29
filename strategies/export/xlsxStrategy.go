@@ -5,40 +5,54 @@ import (
 	"fmt"
 	"github.com/jasongauvin/wikiPattern/models"
 	"github.com/tealeg/xlsx"
-	"log"
 	"strconv"
 	"time"
 )
 
+// Xlsx is the csv export strategy struct
 type Xlsx struct {
 }
 
-func (x *Xlsx) export(article *models.Article) *ArticleExportFile {
+func (x *Xlsx) export(article *models.Article) (*ArticleExportFile, error) {
 	var b bytes.Buffer
-	wb := hydrateRows(article)
+	var err error
+
+	wb, err := hydrateRows(article)
+
+	if err != nil {
+		return nil, err
+	}
+
 	articleExportFile := new(ArticleExportFile)
 	if err := wb.Write(&b); err != nil {
-		log.Fatal("An error occurred while creating sheet", err)
+		return nil, err
 	}
+
+	// Fill in article file struct
 	articleExportFile.FileBytes = b.Bytes()
 	articleExportFile.MimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 	articleExportFile.FileName = time.Now().UTC().Format("data-20200728173805.xlsx")
 
-	return articleExportFile
+	return articleExportFile, nil
 }
 
-func createSheet() (*xlsx.Sheet, *xlsx.File) {
+func createSheet() (*xlsx.Sheet, *xlsx.File, error) {
 	fmt.Println("Export in csv")
 	wb := xlsx.NewFile()
 	sh, err := wb.AddSheet("Articles")
 	if err != nil {
-		log.Fatal("An error occurred while creating sheet", err)
+		return sh, wb, err
 	}
-	return sh, wb
+	return sh, wb, nil
 }
 
-func hydrateRows(article *models.Article) *xlsx.File {
-	sh, wb := createSheet()
+func hydrateRows(article *models.Article) (*xlsx.File, error) {
+	sh, wb, err := createSheet()
+
+	if err != nil {
+		return nil, err
+	}
+
 	row := sh.AddRow()
 	row.AddCell().Value = "Id"
 	row.AddCell().Value = "Title"
@@ -50,5 +64,5 @@ func hydrateRows(article *models.Article) *xlsx.File {
 	row2.AddCell().Value = article.Content
 	row2.AddCell().Value = time.Time.String(article.CreatedAt)
 
-	return wb
+	return wb, nil
 }
