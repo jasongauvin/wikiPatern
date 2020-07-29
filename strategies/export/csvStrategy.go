@@ -3,7 +3,6 @@ package export
 import (
 	"bytes"
 	"encoding/csv"
-	"fmt"
 	"github.com/jasongauvin/wikiPattern/models"
 	"strconv"
 	"time"
@@ -14,7 +13,6 @@ type Csv struct {
 }
 
 func (c *Csv) export(article *models.Article) (*ArticleExportFile, error) {
-	fmt.Println("Export in csv")
 	articleExportFile := new(ArticleExportFile)
 	
 	var err error

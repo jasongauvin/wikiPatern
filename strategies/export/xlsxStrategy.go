@@ -2,7 +2,6 @@ package export
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/jasongauvin/wikiPattern/models"
 	"github.com/tealeg/xlsx"
 	"strconv"
@@ -37,7 +36,6 @@ func (x *Xlsx) export(article *models.Article) (*ArticleExportFile, error) {
 }
 
 func createSheet() (*xlsx.Sheet, *xlsx.File, error) {
-	fmt.Println("Export in csv")
 	wb := xlsx.NewFile()
 	sh, err := wb.AddSheet("Articles")
 	if err != nil {
