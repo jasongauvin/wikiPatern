@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jasongauvin/wikiPattern/services"
+	"github.com/jasongauvin/wikiPattern/strategies/export"
 	"net/http"
 )
 
@@ -131,4 +132,26 @@ func DeleteArticleById(c *gin.Context) {
 		c.AbortWithStatus(http.StatusNotModified)
 	}
 	c.Redirect(http.StatusMovedPermanently, "/articles")
+}
+
+func ExportArticle(c *gin.Context) {
+	queryParams := c.Request.URL.Query()
+	exportFormat := queryParams["format"][0]
+
+	csv := &export.Csv{}
+	xlsx := &export.Xlsx{}
+	var articleExportFile *export.ArticleExportFile
+	var exportContext *export.ExportContext
+
+	// Select export Format
+	if exportFormat == "csv" {
+		exportContext = export.InitExportContext(csv)
+	} else if exportFormat == "xlsx" {
+		exportContext = export.InitExportContext(xlsx)
+	}
+	articleExportFile = exportContext.Export(c.Param("id"))
+	c.Header("Content-Description", "File Transfer")
+	c.Header("Content-Disposition", "attachment; filename="+articleExportFile.FileName)
+	c.Data(http.StatusOK, articleExportFile.MimeType, articleExportFile.FileBytes)
+	//c.Redirect(http.StatusTemporaryRedirect, "/articles/"+c.Param("id"))
 }
