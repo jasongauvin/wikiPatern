@@ -2,8 +2,13 @@
 
 ![Go](https://github.com/jasongauvin/wikiPattern/workflows/Go/badge.svg?branch=master)
 
-This repository is to train on design patterns, this iteration is about the MVC design pattern.
+This repository is a small training on design patterns, this iteration is about the MVC design pattern.
 
+The project comes with a front-end that you can access through : `localhost:8000`
+
+>Some features are presented but are not working yet: Thumbnails, Popular articles list, Likes, Tags, and SearchBar.
+
+>Working features: HomePage, Article list, CRUD for articles, Comments on articles and export articles on CSV and XLSX formats.
 ---
 ## Install
 
