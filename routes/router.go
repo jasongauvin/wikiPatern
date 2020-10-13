@@ -15,17 +15,20 @@ func SetupRouter(router *gin.Engine) {
 	// ----HOME
 
 	// Articles----
-	router.GET("/articles", controllers.GetArticles)
-	router.GET("/articles/:id", controllers.GetArticleById)
-	router.GET("/articles/create", controllers.GetArticleForm)
-	router.POST("/articles/create", controllers.CreateArticle)
-	router.GET("/edit_article/:id", controllers.GetArticleEditForm)
-	router.POST("/edit_article/:id", controllers.EditArticleById)
-	router.GET("/delete_article/:id", controllers.DeleteArticleById)
-	// Export article
-	router.GET("/export/:id", controllers.ExportArticle)
-	// ----Articles
+	articlesView := router.Group("articles")
 
+	articlesView.GET("/", controllers.GetArticles)
+	articlesView.GET("/:id", controllers.GetArticleById)
+	// Articles Forms ----
+	articleForms := router.Group("/")
+	articleForms.GET("/new", controllers.GetArticleForm)
+	articleForms.POST("/new-article", controllers.CreateArticle)
+	articleForms.GET("/edit/:id", controllers.GetArticleEditForm)
+	articleForms.POST("/edit-article/:id", controllers.EditArticleById)
+	router.GET("/delete-article/:id", controllers.DeleteArticleById)
+
+	// Export article
+	router.GET("/export-article/:id", controllers.ExportArticle)
 	// Comments----
 	router.POST("/comment", controllers.CreateComment)
 	// ----Comments

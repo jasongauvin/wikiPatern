@@ -1,12 +1,12 @@
 {{include "layouts/header"}}
 <div class="row">
   <div class="col-lg-8">
-  <!-- Article post -->
+    <!-- Article post -->
   <h1>{{ .article.Title }}</h1>
   <div>
     Export article
-    <a href="/export/{{ .article.ID }}?format=csv"><button>CSV</button></a>
-    <a href="/export/{{ .article.ID }}?format=xlsx"><button>XLSX</button></a>
+    <a href="/export-article/{{ .article.ID }}?format=csv"><button>CSV</button></a>
+    <a href="/export-article/{{ .article.ID }}?format=xlsx"><button>XLSX</button></a>
   </div>
   <p class="lead"><i class="fa fa-user"></i> by <a href="">Anonymous</a>
   </p>
@@ -15,7 +15,8 @@
   <p><i class="fa fa-tags"></i> Tags: <span class="badge badge-info">Bootstrap</span><span class="badge badge-info">Web</span><span class="badge badge-info">CSS</span><span class="badge badge-info">HTML</span></p>
   <hr>
   <img src="http://placehold.it/900x300" class="img-responsive">
-  <hr>
+    <a href="/edit/{{ .article.ID }}"><button class="btn btn-primary">Edit</button></a>
+    <hr>
   <p>{{.article.Content}}</p>
   </div>
 <div class="col-lg-4">

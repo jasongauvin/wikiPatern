@@ -1,6 +1,6 @@
 {{include "layouts/header"}}
    <h2>Edit Article</h2>
-    <form method="post" action="/edit_article/{{.article.ID}}">
+    <form method="post" action="/edit-article/{{.article.ID}}">
         <div class="form-group">
             <label for="articleTitle">Title</label>
             <input type="text" value="{{ .article.Title }}" class="form-control" id="articleTitle" name="articleTitle">
