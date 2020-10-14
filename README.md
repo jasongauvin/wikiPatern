@@ -16,6 +16,7 @@ With docker:
 
 Refer to [Docker-Setup](#docker-setup) to install with docker.
 
+Create your .env and .env.local file and add provider_key and provider_secret to your gmail application
 
 Without docker: 
 
@@ -26,6 +27,11 @@ If not, to run this project, you will need to install the following dependencies
 ## Docker-Setup
 
 ![build instructions](assets/build.png)
+
+On linux, if you have a permission denied error on mysql_data, run :
+```
+sudo chown -R <user>:<user> ./folder
+```
 
 ## Branch naming convention
 
