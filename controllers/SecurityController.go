@@ -3,9 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/jasongauvin/wikiPattern/models"
 	"github.com/jasongauvin/wikiPattern/services"
-	uuid "github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -28,7 +26,8 @@ func Registration(c *gin.Context) {
 			gin.H{"error": err.Error()})
 		return
 	}
-	userCreated, err := services.SaveUser(registerForm.Email, registerForm.Password)
+	u, err := services.SaveUser(&registerForm)
+	services.CreateUserSession(c, u)
 	if err != nil {
 		c.HTML(
 			http.StatusUnprocessableEntity,
@@ -36,18 +35,8 @@ func Registration(c *gin.Context) {
 			gin.H{"error": err.Error()})
 		return
 	}
-	sessionKey := uuid.NewV4().String()
-	session, err := models.CreateUserSession(userCreated, sessionKey)
-	if err != nil {
-		c.HTML(
-			http.StatusUnprocessableEntity,
-			"errors/error.html",
-			gin.H{"error": err.Error()})
-		return
-	}
-	c.SetCookie("session_token", session.SessionKey, 3600, "/", "localhost", false, true)
+
 	c.Redirect(http.StatusMovedPermanently, "/auth/profile")
-	c.Abort()
 }
 
 func GetLoginForm(c *gin.Context) {
@@ -57,27 +46,10 @@ func GetLoginForm(c *gin.Context) {
 		gin.H{
 			"title": "Registration",
 		})
+	return
 }
 
 func Login(c *gin.Context) {
-	var err error
-	var loginForm services.LoginForm
-	if err = c.ShouldBind(&loginForm); err != nil {
-		fmt.Println("error:", err)
-		c.HTML(
-			http.StatusBadRequest,
-			"errors/error.html",
-			gin.H{"error": err.Error()})
-		return
-	}
-	var userSession *models.UserSession
-	userSession, err = services.AuthenticateUser(loginForm.Email, loginForm.Password)
-	if err != nil {
-		c.AbortWithStatus(http.StatusUnauthorized)
-	}
-	if userSession != nil {
-		c.SetCookie("session_token", userSession.SessionKey, 3600, "/", "localhost", false, true)
-		c.Redirect(http.StatusMovedPermanently, "/auth/profile")
-		c.Abort()
-	}
+	services.AuthenticateUser(c)
+	return
 }

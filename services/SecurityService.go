@@ -1,13 +1,17 @@
 package services
 
 import (
+	"errors"
 	"fmt"
+	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-gonic/gin"
 	"github.com/jasongauvin/wikiPattern/models"
 	"golang.org/x/crypto/bcrypt"
-	"time"
+	"net/http"
 )
 
 type RegisterForm struct {
+	Name 	 string `form:"userName", binding:"required"`
 	Email    string `form:"userEmail" binding:"required"`
 	Password string `form:"userPassword" binding:"required"`
 }
@@ -19,17 +23,18 @@ type LoginForm struct {
 
 // SaveUser creates a user.
 // Return the created object
-func SaveUser(email string, password string) (*models.User, error) {
+func SaveUser(registerForm *RegisterForm) (*models.User, error) {
 	var err error
-	var user models.User
-	user.Email = email
-	user.Password = password
-
+	user := models.User{
+		Name:     registerForm.Name,
+		Password: registerForm.Password,
+		Email:    registerForm.Email,
+		Admin:    false,
+	}
 	userCreated, err := models.CreateUser(&user)
 	if err != nil {
 		return nil, err
 	}
-
 	return userCreated, nil
 }
 
@@ -37,56 +42,84 @@ func SaveUser(email string, password string) (*models.User, error) {
 // Compare the passed password and the hashed password stored.
 // Check the session expiration date and update the token with a new one.
 // Return the UserSession.
-func AuthenticateUser(email string, password string) (*models.UserSession, error) {
+func AuthenticateUser(c *gin.Context) {
 	var err error
 	var user *models.User
-
-	user, err = models.FindUserByEmail(email)
+	var loginForm LoginForm
+	if err = c.ShouldBind(&loginForm); err != nil {
+		fmt.Println("error:", err)
+		c.HTML(
+			http.StatusBadRequest,
+			"errors/error.html",
+			gin.H{"error": err.Error()})
+		return
+	}
+	user, err = models.FindUserByEmail(loginForm.Email)
 	if err != nil {
 		fmt.Println("error:", err)
-		return nil, err
+		c.HTML(
+			http.StatusBadRequest,
+			"errors/error.html",
+			gin.H{"error": err.Error()})
+		return
 	}
-	err = models.VerifyPassword(user.Password, password)
+	err = models.VerifyPassword(user.Password, loginForm.Password)
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
-		fmt.Println("error:", err)
-		return nil, err
+		c.HTML(
+			http.StatusBadRequest,
+			"errors/error.html",
+			gin.H{"error": err.Error()})
+		return
 	}
-	userSession, err := CheckSessionExpiration(user.ID)
-	if err != nil {
-		fmt.Println("error:", err)
-		return nil, err
-	}
-
-	return userSession, nil
+	CreateUserSession(c, user)
+	c.Redirect(http.StatusMovedPermanently, "/auth/profile")
+	return
 }
 
-// CheckSessionExistence let you find the token by the sessionKey
-// Return the UserSession
-func CheckSessionExistence(sessionKey string) (*models.UserSession, error) {
-	var userSession *models.UserSession
+func CreateUserSession(c *gin.Context, u *models.User)  {
 	var err error
-	userSession, err = models.FindSessionByKey(sessionKey)
-	if err != nil {
-		return nil, err
+	session := sessions.Default(c)
+	session.Set("uuid", u.Uuid)
+	if err = session.Save(); err != nil {
+		c.HTML(
+			http.StatusBadRequest,
+			"errors/error.html",
+			gin.H{"error": err.Error()})
+		return
 	}
-
-	return userSession, nil
 }
 
-// CheckSessionExpiration let you find the token by the user id
-// Check if the UserSession is expired
-// Update the UserSession with a new expire date and sessionToken
-func CheckSessionExpiration(id uint64) (*models.UserSession, error) {
-	userSession, err := models.FindSessionByUserId(id)
-	if err != nil {
-		fmt.Println("error:", err)
-		return nil, err
+// CheckSessionExistence let you find the userId by the sessionKey
+// Return an error
+func CheckSessionExistence(c *gin.Context) (interface{}, error) {
+	session := sessions.Default(c)
+	us := session.Get("uuid")
+	if us == nil {
+		return nil, errors.New("No session found")
 	}
-	if userSession.ExpireAt.After(time.Now()) {
-		var updatedSession *models.UserSession
-		updatedSession, err = models.EditUserSessionByKey(userSession, userSession.SessionKey)
-		return updatedSession, nil
+
+	return us, nil
+}
+
+// Logout let you delete the user's session
+// Calls CheckSessionExistence
+func Logout(c *gin.Context)  {
+	var err error
+	if _, err = CheckSessionExistence(c); err != nil {
+		c.HTML(
+			http.StatusInternalServerError,
+			"errors/error.html",
+			gin.H{"error": err.Error()})
+		return
 	}
-	return userSession, nil
+	session := sessions.Default(c)
+	session.Delete("123")
+	if err = session.Save(); err != nil {
+		c.HTML(
+			http.StatusInternalServerError,
+			"errors/error.html",
+			gin.H{"error": err.Error()})
+		return
+	}
 
 }

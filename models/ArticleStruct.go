@@ -12,7 +12,7 @@ type Article struct {
 	Content string `gorm:"size:2000"`
 	//Published bool    `gorm:"default:false"`
 	Comments  []Comment `gorm:"foreignkey:ArticleId"`
-	Tags      []Tag     `gorm:"foreignkey:ArticleId"`
+	Tags      []*Tag `gorm:"many2many:tags_articles;"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -21,7 +21,7 @@ type Article struct {
 func FindArticleByID(uid uint64) (Article, error) {
 	var err error
 	var article Article
-	err = db.Debug().Preload("Comments").Preload("Tags").First(&article, uid).Error
+	err = db.Debug().Preload("Comments").First(&article, uid).Error
 	if err != nil {
 		return Article{}, err
 	}
@@ -82,13 +82,19 @@ func CreateArticle(article *Article) error {
 	var err error
 	article.CreatedAt = time.Now()
 	err = db.Debug().Create(article).Error
-
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
+func AssociateTagsToArticle(article *Article) error {
+	err := db.Debug().Association("Tag").Append(&article.Tags).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
 // FindArticlesByName returns you an article from its name
 func FindArticleByName(name string) (Article, error) {
 	var err error

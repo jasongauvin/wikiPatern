@@ -1,7 +1,7 @@
 {{include "layouts/header"}}
 <h2>New Article</h2>
 
-<form method="POST" action="/articles">
+<form method="POST" action="/articles" id="articleForm">
     <div class="form-group">
         <label for="articleTitle">Title</label>
         <input type="text" class="form-control" id="articleTitle" name="articleTitle">
@@ -10,16 +10,62 @@
         <label for="articleContent">Content</label>
         <textarea class="form-control" id="articleContent" name="articleContent" rows="3"></textarea>
     </div>
+    <div class="form-group">
+        <label for="articleTags">Tags</label>
+        <input class="form-control" id="articleTags">
+        <input type="text" id="articleTagsList" name="articleTags" hidden>
+        <div id="tagList"></div>
+    </div>
     <div class="form-group form-check">
         <input type="checkbox" class="form-check-input" id="articlePublish">
-        <label class="form-check-label" for="articlePublish" >Publish</label>
+        <label class="form-check-label" for="articlePublish">Publish</label>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" id="submitForm" class="btn btn-primary">Submit</button>
 </form>
 <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
 <script>
-    tinymce.init({
-        selector: '#articleContent'
+    document.addEventListener('DOMContentLoaded', (event) => {
+
+        tinymce.init({
+            selector: '#articleContent'
+        });
+        let tagList = [];
+        const tagInput = document.getElementById("articleTags");
+        const articleTagsList = document.getElementById('articleTagsList')
+
+        tagInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                CreateTagElements()
+            }
+        })
+
+        function CreateTagElements() {
+            let tag = document.createElement('span');
+            tag.classList.add('badge');
+            tag.classList.add('badge-primary');
+            if (!tagList.includes(tagInput.value)) {
+                tag.textContent = tagInput.value
+                document.getElementById("tagList").appendChild(tag)
+                tagList.push(tag.textContent)
+            }
+            articleTagsList.value = tagList
+        }
+
+        function RemoveAllTags(){
+            const parent = document.getElementById("tagList")
+            while (parent.firstChild) {
+                parent.removeChild(parent.firstChild);
+            }
+        }
+
+        document.getElementById('submitForm').addEventListener("click", function (e){
+            if (e.key === "Enter"){
+                return false;
+            } else {
+                document.getElementById('articleForm').submit()
+            }
+        })
+
     });
 </script>
 {{include "layouts/footer"}}

@@ -6,9 +6,9 @@ import (
 )
 
 type Tag struct {
-	ID        uint64 `gorm:"primary_key"`
-	Name      string `gorm:"size:255;unique;not null"`
-	ArticleId uint64
+	ID       uint64     `gorm:"primary_key"`
+	Name     string     `gorm:"size:255;unique;not null"`
+	Articles []*Article `gorm:"many2many:tags_articles;"`
 }
 
 // FindTagByID allows you to find a specific tag using its id

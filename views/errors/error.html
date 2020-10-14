@@ -1,4 +1,10 @@
 {{include "layouts/header"}}
-<img src="https://thumbnail.imgbin.com/4/6/11/imgbin-computer-icons-symbol-error-warning-N1pcUEvNz5f33fnmqUE3R1w8m_t.jpg" alt="errorImg">
-<h2>Error</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <img src="https://thumbnail.imgbin.com/4/6/11/imgbin-computer-icons-symbol-error-warning-N1pcUEvNz5f33fnmqUE3R1w8m_t.jpg" alt="errorImg">
+                <h2>Error {{ .error.Error }}</h2>
+            </div>
+        </div>
+    </div>
 {{include "layouts/footer"}}

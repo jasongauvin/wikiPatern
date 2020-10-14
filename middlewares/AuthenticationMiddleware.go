@@ -6,22 +6,12 @@ import (
 	"net/http"
 )
 
+// CheckAuthorization verify that the user got the session key.
 func CheckAuthorization(c *gin.Context) {
-	cookie, err := c.Cookie("session_token")
-	if err != nil {
-		if err == http.ErrNoCookie {
-			c.Redirect(http.StatusPermanentRedirect, "/login")
-			c.Abort()
-			return
-		}
-		c.Redirect(http.StatusPermanentRedirect, "/login")
-		c.Abort()
-		return
-	}
-	_, err = services.CheckSessionExistence(cookie)
+	var err error
+	_, err = services.CheckSessionExistence(c)
 	if err != nil {
 		c.Redirect(http.StatusPermanentRedirect, "/login")
-		c.Abort()
 		return
 	}
 	c.Next()

@@ -1,15 +1,22 @@
 {{include "layouts/header"}}
-<h1>Posts list</h1>
-<a href="/new_article" class="btn btn-primary">Create article</a>
-
-  {{ range .payload }}
-    <div class="card" style="width: 18rem; display: inline-block">
-      <img src="http://placehold.it/286x180" class="img-responsive" alt="cardImg">
-      <div class="card-body">
-        <h5 class="card-title">{{ .Title }}</h5>
-        <a href="/articles/{{ .ID }}" class="btn btn-primary">Show article</a>
-        <a href="/delete_article/{{ .ID }}" class="btn btn-danger">Delete article</a>
+<div class="container">
+  <h1>Posts list</h1>
+  <div class="row">
+    <a href="/new_article" class="btn btn-primary">Create article</a>
+  </div>
+  <div class="row" style="margin-top: 20px;">
+    {{ range .payload }}
+      <div class="col">
+        <div class="card" style="width: 18rem; display: inline-block">
+          <img src="http://placehold.it/286x180" class="card-img-top img-responsive" alt="cardImg">
+          <div class="card-body">
+            <h5 class="card-title">{{ .Title }}</h5>
+            <a href="/articles/{{ .ID }}" class="btn btn-primary">Show article</a>
+            <a href="/delete_article/{{ .ID }}" class="btn btn-danger">Delete article</a>
+          </div>
+        </div>
       </div>
-    </div>
-  {{ end }}
+    {{ end }}
+  </div>
+</div>
 {{include "layouts/footer"}}

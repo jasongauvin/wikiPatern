@@ -4,11 +4,11 @@ go 1.14
 
 require (
 	github.com/badoux/checkmail v0.0.0-20200623144435-f9f80cb795fa
+	github.com/boj/redistore v0.0.0-20180917114910-cd5dcc76aeff // indirect
 	github.com/caarlos0/env/v6 v6.3.0
 	github.com/denisenkom/go-mssqldb v0.0.0-20191128021309-1d7a30a10f73 // indirect
 	github.com/foolin/goview v0.3.0
-	github.com/gin-contrib/sessions v0.0.3 // indirect
-	github.com/gin-gonic/contrib v0.0.0-20191209060500-d6e26eeaa607 // indirect
+	github.com/gin-gonic/contrib v0.0.0-20191209060500-d6e26eeaa607
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-playground/validator/v10 v10.3.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0

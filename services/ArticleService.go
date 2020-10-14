@@ -9,6 +9,7 @@ import (
 type ArticleForm struct {
 	Title   string `form:"articleTitle" binding:"required"`
 	Content string `form:"articleContent" binding:"required"`
+	Tags 	[]string `form:"articleTags"`
 	//Published bool   `form:"articlePublish"`
 }
 
@@ -47,12 +48,16 @@ func LoadArticleById(id string) (*models.Article, error) {
 	return &article, nil
 }
 
-func SaveArticle(title string, content string) (*models.Article, error) {
+func SaveArticle(title string, content string, tags []string) (*models.Article, error) {
 	var article models.Article
 	article.Title = title
 	article.Content = content
 	article.CreatedAt = time.Now()
 	err := models.CreateArticle(&article)
+	if err != nil {
+		return nil, err
+	}
+	err = models.AssociateTagsToArticle(&article)
 	if err != nil {
 		return nil, err
 	}
